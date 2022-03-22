@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using APIClientes.Data;
 using APIClientes.Modelos;
+using APIClientes.Repositorio;
+using APIClientes.Modelos.DTO;
 
 namespace APIClientes.Controllers
 {
@@ -15,95 +17,124 @@ namespace APIClientes.Controllers
     [ApiController]
     public class ClientesController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IClienteRepositorio _clienteRepositorio;
+        protected ResponseDTO _response;
 
-        public ClientesController(ApplicationDbContext context)
+        public ClientesController(IClienteRepositorio clienteRepositorio)
         {
-            _context = context;
+            _clienteRepositorio = clienteRepositorio;
+            _response = new ResponseDTO();
         }
 
         // GET: api/Clientes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Cliente>>> GetClientes()
         {
-            return await _context.Clientes.ToListAsync();
+            try
+            {
+                var lista = await _clienteRepositorio.GetClientes();
+                _response.Result = lista;
+                _response.DisplayMessage = "Lista de Clientes";
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string> { ex.ToString() };
+            }
+
+            return Ok(_response);
         }
 
         // GET: api/Clientes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Cliente>> GetCliente(int id)
         {
-            var cliente = await _context.Clientes.FindAsync(id);
-
+            var cliente = await _clienteRepositorio.GetClientesById(id);
             if (cliente == null)
             {
-                return NotFound();
-            }
+                _response.IsSuccess = false;
+                _response.DisplayMessage = "Cliente no Existe";
+                return NotFound(_response);
 
-            return cliente;
+            }
+            else
+            {
+                _response.Result = cliente;
+                _response.DisplayMessage = "Información del cliente";
+                return Ok(_response);
+            }
         }
 
         // PUT: api/Clientes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCliente(int id, Cliente cliente)
+        public async Task<IActionResult> PutCliente(int id, ClienteDTO clienteDTO)
         {
-            if (id != cliente.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(cliente).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                ClienteDTO model = await _clienteRepositorio.CreateUpdate(clienteDTO);
+                _response.Result = model;
+                return Ok(_response);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!ClienteExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                _response.IsSuccess = false;
+                _response.DisplayMessage = "Error al actualizar el registro";
+                _response.ErrorMessages = new List<string> { ex.ToString() };
+                return BadRequest(_response);
             }
-
-            return NoContent();
         }
 
         // POST: api/Clientes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Cliente>> PostCliente(Cliente cliente)
+        public async Task<ActionResult<Cliente>> PostCliente(ClienteDTO clienteDTO)
         {
-            _context.Clientes.Add(cliente);
-            await _context.SaveChangesAsync();
+            try
+            {
+                ClienteDTO model = await _clienteRepositorio.CreateUpdate(clienteDTO);
+                _response.Result = model;
+                return CreatedAtAction("GetCliente", new { id = model.Id }, _response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.DisplayMessage = "Error al grabar el registro";
+                _response.ErrorMessages = new List<string> { ex.ToString() };
+                return BadRequest(_response);
+            }
 
-            return CreatedAtAction("GetCliente", new { id = cliente.Id }, cliente);
+            
         }
 
         // DELETE: api/Clientes/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCliente(int id)
         {
-            var cliente = await _context.Clientes.FindAsync(id);
-            if (cliente == null)
+            try
             {
-                return NotFound();
+                bool eliminado = await _clienteRepositorio.DeleteCliente(id);
+                if (eliminado)
+                {
+                    _response.Result = eliminado;
+                    _response.DisplayMessage = "Cliente eliminado con exito";
+                    return Ok(_response);
+                }
+                else {
+                    _response.IsSuccess = false;
+                    _response.DisplayMessage = "Error al eliminar Cliente";
+                    return BadRequest(_response);
+                }
             }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string> { ex.ToString() };
+                return BadRequest(_response);
 
-            _context.Clientes.Remove(cliente);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+                
+            }
         }
 
-        private bool ClienteExists(int id)
-        {
-            return _context.Clientes.Any(e => e.Id == id);
-        }
     }
 }
