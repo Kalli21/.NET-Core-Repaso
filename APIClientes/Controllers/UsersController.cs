@@ -49,5 +49,26 @@ namespace APIClientes.Controllers
             
         }
 
+        [HttpPost("Login")]
+        public async Task<ActionResult> Login(UserDTO user) 
+        {
+            var respuesta = await _userRepositorio.Login(user.UserName, user.Password);
+
+            if (respuesta=="nouser")
+            {
+                _response.IsSuccess = false;
+                _response.DisplayMessage = "Usuario no existe";
+                return BadRequest(_response);
+            }
+
+            if (respuesta == "wrongpassword")
+            {
+                _response.IsSuccess = false;
+                _response.DisplayMessage = "Password incorrecto";
+                return BadRequest(_response);
+            }
+
+            return Ok("usuario conectado");
+        }
     }
 }
