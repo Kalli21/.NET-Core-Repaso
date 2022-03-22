@@ -13,6 +13,7 @@ builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<IClienteRepositorio, Clienterepositorio>();
+builder.Services.AddScoped<IUserRepositorio, UserRepositorio>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
