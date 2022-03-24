@@ -39,13 +39,13 @@ namespace APIClientes.Repositorio
             }
         }
 
-        public async Task<int> Register(User user, string password)
+        public async Task<string> Register(User user, string password)
         {
             try
             {
                 if (await UserExiste(user.UserName))
                 {
-                    return -1;
+                    return "existe";
                 }
 
                 CrearPasswordHash(password,out byte[] passwordHash,out byte[] passwordSalt);
@@ -55,12 +55,12 @@ namespace APIClientes.Repositorio
 
                 await _db.Users.AddAsync(user);
                 await _db.SaveChangesAsync();
-                return user.Id;
+                return CrearToken(user);
             }
             catch (Exception)
             {
 
-                return -500;
+                return "error";
             }
         }
 
