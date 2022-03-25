@@ -1,0 +1,36 @@
+
+<mat-card>
+    <span>Crear Nuevo Client</span>
+    <form [formGroup]="clienteForm" (ngSubmit)="onSubmit()">
+        <mat-form-field class="crear-cliente-field">
+            <input matInput 
+                placeholder="Nombres del Cliente" 
+                formControlName="nombres"
+                type="text">
+        </mat-form-field>
+
+        <mat-form-field class="crear-cliente-field">
+            <input matInput 
+                placeholder="Apellidos del Cliente" 
+                formControlName="apellidos"
+                type="text">
+        </mat-form-field>
+
+        <mat-form-field class="crear-cliente-field">
+            <input matInput 
+                placeholder="Direccion del Cliente" 
+                formControlName="direccion"
+                type="text">
+        </mat-form-field>
+
+        <mat-form-field class="crear-cliente-field">
+            <input matInput 
+                placeholder="Telefono del Cliente" 
+                formControlName="telefono"
+                type="text">
+        </mat-form-field>
+
+        <button mat-raised-button [disabled]="!clienteForm.valid" > Crear Nuevo</button>
+
+    </form>
+</mat-card>
