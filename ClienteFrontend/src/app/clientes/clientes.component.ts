@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ClienteService } from '../cliente.service';
 import { ClienteInterface } from '../interfaces/ClienteInterface';
 import { ActualizarClienteComponent } from '../actualizar-cliente/actualizar-cliente.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-clientes',
@@ -16,7 +17,8 @@ export class ClientesComponent implements OnInit {
   displayedColumns:string[] = ['nombres','apellidos','direccion','Acciones'];
 
   constructor(private service:ClienteService,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog,
+              private router: Router) { }
 
   ngOnInit(): void {
 
@@ -24,7 +26,7 @@ export class ClientesComponent implements OnInit {
       .subscribe((data:any) =>{
         this.dataSource = new MatTableDataSource<ClienteInterface>(data.result as ClienteInterface[]);
         console.log(data);
-      });
+      },(errorData)=> this.router.navigate(['/login']));
 
   }
 
@@ -41,6 +43,10 @@ export class ClientesComponent implements OnInit {
       }
     });
 
+  }
+
+  aplicarFlitro(filtro:any){
+    this.dataSource.filter = filtro.target.value.trim().toLowerCase();
   }
 
 }
