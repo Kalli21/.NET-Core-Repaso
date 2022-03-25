@@ -7,6 +7,7 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 
 import { ClienteService } from './cliente.service';
+import { AuthService } from './auth.service';
 import { AppRouterModule } from './app-router.module';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -22,6 +23,9 @@ import { MatDialogModule} from '@angular/material/dialog';
 import { ActualizarClienteComponent } from './actualizar-cliente/actualizar-cliente.component';
 import { DeleteClienteComponent } from './delete-cliente/delete-cliente.component';
 import { MatListModule} from '@angular/material/list';
+import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './login/login.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -31,7 +35,9 @@ import { MatListModule} from '@angular/material/list';
     FooterComponent,
     CrearClienteComponent,
     ActualizarClienteComponent,
-    DeleteClienteComponent
+    DeleteClienteComponent,
+    RegisterComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -45,10 +51,11 @@ import { MatListModule} from '@angular/material/list';
     MatCardModule,
     MatToolbarModule,
     MatDialogModule,
-    MatListModule
+    MatListModule,
+    FormsModule
   ],
   entryComponents: [ActualizarClienteComponent],
-  providers: [ClienteService],
+  providers: [ClienteService,AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
