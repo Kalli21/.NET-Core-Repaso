@@ -18,5 +18,10 @@ export class ClienteService {
   crearCliente(cliente:ClienteInterface){
     return this.http.post(this.baseUrl,cliente);
   }
+  
+  actualizarCliente(id:number, cliente:ClienteInterface){
+    
+    return this.http.put(this.baseUrl+'/'+id,cliente);
+  }
 
 }
