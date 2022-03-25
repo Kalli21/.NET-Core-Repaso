@@ -20,6 +20,8 @@ import { MatCardModule} from '@angular/material/card'
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { MatDialogModule} from '@angular/material/dialog';
 import { ActualizarClienteComponent } from './actualizar-cliente/actualizar-cliente.component';
+import { DeleteClienteComponent } from './delete-cliente/delete-cliente.component';
+import { MatListModule} from '@angular/material/list';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,8 @@ import { ActualizarClienteComponent } from './actualizar-cliente/actualizar-clie
     HeaderComponent,
     FooterComponent,
     CrearClienteComponent,
-    ActualizarClienteComponent
+    ActualizarClienteComponent,
+    DeleteClienteComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +44,8 @@ import { ActualizarClienteComponent } from './actualizar-cliente/actualizar-clie
     MatInputModule,
     MatCardModule,
     MatToolbarModule,
-    MatDialogModule
+    MatDialogModule,
+    MatListModule
   ],
   entryComponents: [ActualizarClienteComponent],
   providers: [ClienteService],

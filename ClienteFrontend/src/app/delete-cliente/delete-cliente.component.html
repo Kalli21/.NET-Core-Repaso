@@ -1,0 +1,36 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Esta seguro de eliminar el cliente?</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        <mat-list-item>
+            <b>Nombres: {{cliente.nombres}} </b>
+        </mat-list-item>
+
+        <mat-divider></mat-divider>
+
+        <mat-list-item>
+            <b>Apellidos: {{cliente.apellidos}}</b>
+        </mat-list-item>
+
+        <mat-divider></mat-divider>
+
+        <mat-list-item>
+            <b>Direccion: {{cliente.direccion}}</b>
+        </mat-list-item>
+
+        <mat-divider></mat-divider>
+
+        <mat-list-item>
+            <b>Telefono: {{cliente.telefono}}</b>
+        </mat-list-item>
+        
+
+    </mat-card-content>
+
+    <mat-card-actions>
+        <button mat-flat-button (click)="cancel()">Cancelar</button>
+        <button mat-raised-button color="warm" (click)="confirmar()">Confirmar</button>
+    </mat-card-actions>
+</mat-card>

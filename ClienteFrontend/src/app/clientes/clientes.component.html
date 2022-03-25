@@ -21,6 +21,9 @@
             <button (click)="actualizarCliente(element)" mat-raised-button color="primary">
                 <b>Editar</b>
             </button>
+            <button [routerLink]="['delete-cliente', element.id]" mat-raised-button color='warm'>
+                <b>Eliminar</b>
+            </button>
         </td>
     </ng-container>
 
