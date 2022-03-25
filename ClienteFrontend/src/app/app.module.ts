@@ -27,6 +27,7 @@ import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatDialogModule,
     MatListModule,
     FormsModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatIconModule
   ],
   entryComponents: [ActualizarClienteComponent],
   providers: [ClienteService,AuthService],

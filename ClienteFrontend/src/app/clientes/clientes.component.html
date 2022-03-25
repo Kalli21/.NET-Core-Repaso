@@ -23,9 +23,11 @@
         <th mat-header-cell *matHeaderCellDef>Acciones</th>
         <td mat-cell *matCellDef="let element">
             <button (click)="actualizarCliente(element)" mat-raised-button color="primary">
+                <mat-icon color="white">edit</mat-icon>
                 <b>Editar</b>
             </button>
             <button [routerLink]="['delete-cliente', element.id]" mat-raised-button color='warm'>
+                <mat-icon color="white">delete</mat-icon>
                 <b>Eliminar</b>
             </button>
         </td>
